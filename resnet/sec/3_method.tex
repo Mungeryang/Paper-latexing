@@ -1,0 +1,118 @@
+\section{Deep Residual Learning}
+
+\subsection{Residual Learning}
+\label{sec:motivation}
+
+Let us consider $\mathcal{H}(\ve{x})$ as an underlying mapping to be fit by \textbf{a few stacked layers (not necessarily the entire net)}, with $\ve{x}$ denoting the inputs to the first of these layers. If one hypothesizes that multiple nonlinear layers can asymptotically approximate complicated functions\footnote{This hypothesis, however, is still an open question. See [28].}, then it is equivalent to hypothesize that they can asymptotically approximate the residual functions, \ie, $\mathcal{H}(\ve{x})-\ve{x}$ (assuming that the input and output are of the same dimensions).\ygm{(假设多层非线性层能渐近逼近复杂函数，等价地它们也能渐近逼近残差函数 $\mathcal{H}(\ve{x})-\ve{x}$)}
+So rather than expect stacked layers to approximate $\mathcal{H}(\ve{x})$, we explicitly let these layers approximate a residual function $\mathcal{F}(\ve{x}):=\mathcal{H}(\ve{x})-\ve{x}$. The original function thus becomes $\mathcal{F}(\ve{x})+\ve{x}$. Although both forms should be able to asymptotically approximate the desired functions (as hypothesized), the ease of learning might be different.\ygm{($\mathcal{H}(\ve{x})$是待拟合的基础映射)}
+
+This reformulation is motivated by the \textbf{counterintuitive phenomena}\ygm{(反直觉现象)} about the degradation problem (Fig.1, left). As we discussed in the introduction, if the added layers can be constructed as identity mappings, a deeper model should have training error no greater than its shallower counterpart. The degradation problem suggests that the solvers might have difficulties in approximating identity mappings by multiple nonlinear layers. With the residual learning reformulation, if identity mappings are optimal, the solvers may simply drive the weights of the multiple nonlinear layers toward zero to approach identity mappings.
+
+In real cases, it is unlikely that identity mappings are optimal, but our reformulation may help to precondition the problem. If the optimal function is closer to an identity mapping than to a zero mapping, it should be easier for the solver to find the perturbations with reference to an identity mapping, than to learn the function as a new one. We show by experiments (Fig.7) that the learned residual functions in general have small responses, suggesting that identity mappings provide reasonable preconditioning.\ygm{("网络能逼近任意复杂函数"这个假设成立的条件下，逼近 $\mathcal{H}$ 和逼近 $\mathcal{H}-\ve{x}$在表达能力上没有差别。)}
+
+\subsection{Identity Mapping by Shortcuts}
+We adopt residual learning to every few stacked layers.
+A building block is shown in Fig.2. Formally, in this paper we consider a building block defined as:
+\begin{equation}\label{eq:identity}
+    \ve{y} = \mathcal{F}(\ve{x},\{W_{i}\}) + \ve{x}.
+\end{equation}
+Here $\ve{x}$ and $\ve{y}$ are the input and output vectors of the layers considered. The $\mathcal{F}(\ve{x},\{W_{i}\})$ represents the residual mapping to be learned. For the example, in Fig.2 that has two layers, $\mathcal{F}=W_{2}\sigma(W_{1}\ve{x})$ in which $\sigma$ denotes ReLU and the biases are omitted for simplifying notations. The operation $\mathcal{F}+\ve{x}$ is performed by a shortcut connection and element-wise addition. We adopt the second nonlinearity after the addition (\ie, $\sigma(\ve{y})$, see Fig.2).
+
+The shortcut connections in Eqn.(\ref{eq:identity}) introduce \textbf{neither extra parameter nor computation complexity}. This is not only attractive in practice but also important in our comparisons between plain and residual networks. We can fairly compare plain/residual networks that simultaneously have the same number of parameters, depth, width, and computational cost (except for the negligible element-wise addition).\ygm{(shortcut 是恒等映射，直接取 $F$ 的输入 $\ve{x}$ 送到加法处)}
+
+The dimensions of $\ve{x}$ and $\mathcal{F}$ must be equal in Eqn.(\ref{eq:identity}). If this is not the case (\eg, when changing the input/output channels), we can perform a linear projection $W_{s}$ by the shortcut connections to match the dimensions:
+%\vspace{-.5em}
+\begin{equation}\label{eq:transform}
+    \ve{y} = \mathcal{F}(\ve{x},\{W_{i}\}) + W_{s}\ve{x}
+\end{equation}
+
+We can also use a square matrix $W_{s}$ in Eqn.(\ref{eq:identity}). But we will show by experiments that the identity mapping is sufficient for addressing the degradation problem and is economical, and thus $W_{s}$ is only used when matching dimensions.
+
+The form of the residual function $\mathcal{F}$ is flexible. Experiments in this paper involve a function $\mathcal{F}$ that has two or three layers (Fig.5), while more layers are possible. But if $\mathcal{F}$ has only a single layer, Eqn.(\ref{eq:identity}) is similar to a linear layer: $\ve{y}=W_1\ve{x}+\ve{x}$, for which we have not observed advantages.
+
+We also note that although the above notations are about fully-connected layers for simplicity, they are applicable to convolutional layers. The function $\mathcal{F}(\ve{x}, \{W_{i}\})$ can represent multiple convolutional layers. The element-wise addition is performed on two feature maps, channel by channel.
+
+\subsection{Network Architectures}
+
+We have tested various plain/residual nets, and have observed consistent phenomena. To provide instances for discussion, we describe two models for ImageNet as follows.
+
+\vspace{6pt}
+\noindent\textbf{Plain Network.}
+Our plain baselines (Fig.3, middle) are mainly inspired by the philosophy of VGG nets [40] (Fig.3, left).
+The convolutional layers mostly have 3$\times$3 filters and follow two simple design rules: (i) for the same output feature map size, the layers have the same number of filters; and (ii) if the feature map size is halved, the number of filters is doubled so as to preserve the time complexity per layer. We perform downsampling directly by convolutional layers that have a stride of 2.
+The network ends with a global average pooling layer and a 1000-way fully-connected layer with softmax. The total number of weighted layers is 34 in Fig.3 (middle).
+
+It is worth noticing that our model has \emph{fewer} filters and \emph{lower} complexity than VGG nets [40] (Fig.3, left). Our 34-layer baseline has 3.6 billion FLOPs (multiply-adds), which is only 18\% of VGG-19 (19.6 billion FLOPs).
+
+\vspace{6pt}
+\noindent\textbf{Residual Network.}
+Based on the above plain network, we insert shortcut connections (Fig.3, right) which turn the network into its counterpart residual version.
+The identity shortcuts (Eqn.(\ref{eq:identity})) can be directly used when the input and output are of the same dimensions (solid line shortcuts in Fig.3).
+When the dimensions increase (dotted line shortcuts in Fig.3), we consider two options:
+(A) The shortcut still performs identity mapping, with extra zero entries padded for increasing dimensions. This option introduces no extra parameter;
+(B) The projection shortcut in Eqn.(\ref{eq:transform}) is used to match dimensions (done by 1$\times$1 convolutions).
+For both options, when the shortcuts go across feature maps of two sizes, they are performed with a stride of 2.
+
+% \newcommand{\blocka}[2]{\multirow{3}{*}{\(\left[\begin{array}{c}\text{3$\times$3, #1}\\[-.1em] \text{3$\times$3, #1} \end{array}\right]\)$\times$#2}
+% }
+% \newcommand{\blockb}[3]{\multirow{3}{*}{\(\left[\begin{array}{c}\text{1$\times$1, #2}\\[-.1em] \text{3$\times$3, #2}\\[-.1em] \text{1$\times$1, #1}\end{array}\right]\)$\times$#3}
+% }
+% \renewcommand\arraystretch{1.1}
+% \setlength{\tabcolsep}{3pt}
+% \begin{table*}[t!]
+% \begin{center}
+% \resizebox{0.7\linewidth}{!}{
+% %\footnotesize
+% \begin{tabular}{c|c|c|c|c|c|c}
+% \hline
+% layer name & output size & 18-layer & 34-layer & 50-layer & 101-layer & 152-layer \\
+% \hline
+% conv1 & 112$\times$112 & \multicolumn{5}{c}{7$\times$7, 64, stride 2}\\
+% \hline
+% \multirow{4}{*}{conv2\_x} & \multirow{4}{*}{56$\times$56} & \multicolumn{5}{c}{3$\times$3 max pool, stride 2} \\\cline{3-7}
+%   &  & \blocka{64}{2}  & \blocka{64}{3} & \blockb{256}{64}{3} & \blockb{256}{64}{3} & \blockb{256}{64}{3}\\
+%   &  &  &  &  &  &\\
+%   &  &  &  &  &  &\\
+% \hline
+% \multirow{3}{*}{conv3\_x} &  \multirow{3}{*}{28$\times$28}  & \blocka{128}{2}  & \blocka{128}{4}  & \blockb{512}{128}{4}  & \blockb{512}{128}{4}  &
+%                               \blockb{512}{128}{8}\\
+%   &  &  &  &  &  & \\
+%   &  &  &  &  &  & \\
+% \hline
+% \multirow{3}{*}{conv4\_x} & \multirow{3}{*}{14$\times$14}  & \blocka{256}{2}  & \blocka{256}{6}  & \blockb{1024}{256}{6}  & \blockb{1024}{256}{23} & \blockb{1024}{256}{36}\\
+%   &  &  &  &  & \\
+%   &  &  &  &  & \\
+% \hline
+% \multirow{3}{*}{conv5\_x} & \multirow{3}{*}{7$\times$7}  & \blocka{512}{2}  & \blocka{512}{3}  & \blockb{2048}{512}{3}  & \blockb{2048}{512}{3}
+% & \blockb{2048}{512}{3}\\
+%   &  &  &  &  &  & \\
+%   &  &  &  &  &  & \\
+% \hline
+% & 1$\times$1  & \multicolumn{5}{c}{average pool, 1000-d fc, softmax} \\
+% \hline
+% \multicolumn{2}{c|}{FLOPs} & 1.8$\times10^9$  & 3.6$\times10^9$  & 3.8$\times10^9$  & 7.6$\times10^9$  & 11.3$\times10^9$ \\
+% \hline
+% \end{tabular}
+% }
+% \end{center}
+% \vspace{-.5em}
+% \caption{Architectures for ImageNet. Building blocks are shown in brackets (see also Fig.5), with the numbers of blocks stacked. Downsampling is performed by conv3\_1, conv4\_1, and conv5\_1 with a stride of 2.
+% }
+% \label{tab:arch}
+% \vspace{-.5em}
+% \end{table*}
+
+\subsection{Implementation}
+\label{sec:impl}
+
+Our implementation for ImageNet follows the practice in [21,40]. The image is resized with its shorter side randomly sampled in $[256, 480]$ for scale augmentation [40]. A 224$\times$224 crop is randomly sampled from an image or its horizontal flip, with the per-pixel mean subtracted [21]. The standard color augmentation in [21] is used.
+We adopt batch normalization (BN) [16] right after each convolution and before activation, following [16].
+We initialize the weights as in [12] and train all plain/residual nets from scratch.
+We use SGD with a mini-batch size of 256. The learning rate starts from 0.1 and is divided by 10 when the error plateaus, and the models are trained for up to $60\times10^4$ iterations. We use a weight decay of 0.0001 and a momentum of 0.9. We do not use dropout [13] , following the practice in [16].
+
+In testing, for comparison studies we adopt the standard 10-crop testing [21,40].
+For best results, we adopt the fully-convolutional form as in [12], and average the scores at multiple scales (images are resized such that the shorter side is in $\{224, 256, 384, 480, 640\}$).
+
+
+
+
