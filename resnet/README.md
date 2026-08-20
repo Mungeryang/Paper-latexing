@@ -122,13 +122,13 @@ Flowchart核心逻辑链：
     </tr>
     <tr>
       <td><strong>创新思路是否 Naive？<br>（技术挑战的内化）</strong></td>
-      <td>ResNet 未罗列"3 个挑战"，非平凡性论证分两半完成：前一半在"属性解读"（构造解论证表明直接加深不可行），后一半在"方法总览"（实现零开销、训练机制不变）。对应模板中"投稿 AI 的会议经常不讨论技术挑战，而是直接讲 Our Methodology"的经典写法。</td>
+      <td>ResNet 未罗列"3 个挑战"，nontrivial论证分两半完成：前一半在"属性解读"（构造解论证表明直接加深不可行），后一半在"方法总览"（实现零开销、训练机制不变）。</td>
       <td>
         • 隐含挑战 1：优化困难——求解器找不到构造解，直接堆层（plain net）无效（原文第 4 段已论证）<br>
         <blockquote></blockquote>
         • 隐含挑战 2：工程约束——新结构需不增参数/计算复杂度、不破坏端到端 SGD+BP 与易实现性<br>
         <blockquote></blockquote>
-        • 非平凡性落点：Key Idea 由构造解论证导出、并非拍脑袋；恒等跳连恰好零开销满足工程约束
+        • nontrivial落点：Key Idea 由构造解论证导出；恒等跳连恰好零开销满足工程约束
         <blockquote></blockquote>
       </td>
     </tr>
