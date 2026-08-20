@@ -1,6 +1,7 @@
-# CVPR 2016 - ResNet 写作思路剖析
+# CVPR 2016 - ResNet Intro写作思路剖析
 
-> 论文：Deep Residual Learning for Image Recognition 会议：CVPR 2016 原文链接：https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf
+> 论文：Deep Residual Learning for Image Recognition 会议：CVPR 2016 原文链接：
+> https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf
 
 一般来说，Introduction 可以看作整篇论文的"压缩版"：用最少的篇幅把研究对象讲清楚，把问题为什么难讲透，再把我们的方法为什么必要讲明白。
 
