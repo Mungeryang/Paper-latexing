@@ -1,0 +1,184 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2026
+
+% The authors should use one of these tracks.
+% Before accepting by the NeurIPS conference, select one of the options below.
+% 0. "default" for submission
+\usepackage{neurips_2026}
+% the "default" option is equal to the "main" option, which is used for the Main Track with double-blind reviewing.
+% 1. "main" option is used for the Main Track
+%  \usepackage[main]{neurips_2026}
+% 2. "position" option is used for the Position Paper Track
+%  \usepackage[position]{neurips_2026}
+% 3. "eandd" option is used for the Evaluations & Datasets Track
+ % \usepackage[eandd]{neurips_2026}
+% 4. "creativeai" option is used for the Creative AI Track
+%  \usepackage[creativeai]{neurips_2026}
+% 5. "sglblindworkshop" option is used for the Workshop with single-blind reviewing
+ % \usepackage[sglblindworkshop]{neurips_2026}
+% 6. "dblblindworkshop" option is used for the Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop]{neurips_2026}
+% 7. "education" option is used for the Education Track
+%  \usepackage[education]{neurips_2026}
+
+
+% After being accepted, the authors should add "final" behind the track to compile a camera-ready version.
+% 1. Main Track
+ % \usepackage[main, final]{neurips_2026}
+% 2. Position Paper Track
+%  \usepackage[position, final]{neurips_2026}
+% 3. Evaluations & Datasets Track
+ % \usepackage[eandd, final]{neurips_2026}
+% 4. Creative AI Track
+%  \usepackage[creativeai, final]{neurips_2026}
+% 5. Workshop with single-blind reviewing
+%  \usepackage[sglblindworkshop, final]{neurips_2026}
+% 6. Workshop with double-blind reviewing
+%  \usepackage[dblblindworkshop, final]{neurips_2026}
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote.
+% For workshops (5., 6.), the authors should add the name of the workshop, "\workshoptitle" command is used to set the workshop title.
+% \workshoptitle{WORKSHOP TITLE}
+% 7. Education Track
+% \usepackage[education, final]{neurips_2026}
+
+% "preprint" option is used for arXiv or other preprint submissions
+ % \usepackage[preprint]{neurips_2026}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2026}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{pifont}
+\usepackage{multirow}
+\usepackage{amsmath,bm}
+
+\usepackage{CJKutf8}
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\todo}[1]{{\color{red}#1}}
+\newcommand{\TODO}[1]{\textbf{\color{red}[TODO: #1]}}
+% \newcommand{\ygm}[1]{\textcolor{purpler}{#1}}
+\DeclareRobustCommand{\ygm}[1]{\textnormal{\textcolor{purple}{\begin{CJK}{UTF8}
+{gbsn}#1\end{CJK}}}}
+\DeclareRobustCommand{\words}[1]{\textnormal{\textcolor{blue}{\begin{CJK}{UTF8}
+{gbsn}#1\end{CJK}}}}
+
+% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote. 
+\title{Visual Instruction Tuning}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+
+\author{%
+  David S.~Hippocampus\thanks{Use footnote for providing further information
+    about author (webpage, alternative address)---\emph{not} for acknowledging
+    funding agencies.} \\
+  Department of Computer Science\\
+  Cranberry-Lemon University\\
+  Pittsburgh, PA 15213 \\
+  \texttt{hippo@cs.cranberry-lemon.edu} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+  Instruction tuning large language models (LLMs) using machine-generated instruction-following data has been shown to improve zero-shot capabilities on new tasks, but the idea is \textbf{less explored} in the \underline{multimodal field}.\ygm{(开篇点明任务背景:指令微调可以提升LLM零样本学习能力,但在多模态领域尚未得到充分探索)}
+  We present the \textbf{first attempt} to use language-only GPT-4 to generate multimodal language-image instruction-following data.\ygm{(承接less explored,延伸创新点)}
+  By instruction tuning on such generated data, we introduce LLaVA: \textbf{L}arge \textbf{L}anguage \textbf{a}nd \textbf{V}ision \textbf{A}ssistant, an end-to-end trained large multimodal model that connects a vision encoder and an LLM for general-prupose visual and language understanding.\ygm{(\ding{202}提出核心方法)}
+  To facilitate future research on visual instruction following, we construct two evaluation benchmarks with diverse and challenging application-oriented tasks.\ygm{(\ding{203}构建评测bench)}
+  Our experiments show that LLaVA demonstrates impressive multimodal chat abilities, sometimes exhibiting the behaviors of multimodal GPT-4 on unseen images/instructions, and yeilds a 85.1\% relative score compared with GPT-4 on a synthetic multimodal instruction-following dataset.\ygm{(\ding{204}总结实验效果)}
+  When fine-tuned on Science QA, the synergy of LLaVA and GPT-4 achieves a new state-of-the-art accuracy of 92.53\%.\ygm{(\ding{205}易用性与泛化性证明)}
+  We make GPT-4 generated visual instruction data, our model, and code publicly avaliable.
+\end{abstract}
+
+
+\section{Introduction}
+
+Humans interact with the world through many channels such as vision and language, \textbf{as} each individual channel has a unique advantage in representing and communicating certain concepts, and thus facilitates a better understanding of the world.\ygm{(通过人类的多通道开篇)}
+One of the core aspirations in artificial intelligence is to develop a general-purpose assistant that can effectively follow multi-model vision-and-language instructions, aligned with human intent to complete various real-world tasks in the wild.
+
+To this end, the community has witnessed an emergent interest in developing language-augmented foundation vision models, with strong capabilities on open-world visual understanding such as classification, detection, segmentation, and captioning, as well as visual generation and editing. We refer readers to the \emph{Computer Vision in the Wild} reading list for a more up-to-date literature compilation.
+In this line of work, each task is solved independently by one single large vision model, with the task instruction implicitly considered in the model design.
+Future, language is only utilized to describe the image content.
+While this allows language to play an important role in mapping visual signals to language semantics --- a common channel for human communication, it leads to models that usually have a fixed interface with interactivity and adaptability to the user's instruction.
+
+Large Language Models (LLMs), on the other hand, have shown that language can play a wider role: a universal interface for a language-purpose assistant, where various task instructions can be explicitly represented in language and guide the end-to-end trained neural assistant to switch to the task of interest to solve it. For example, the recent success of ChatGPT and GPT-4 have demonstrated the power of aligned LLMs in following  human instructions, and have stimulated tremendous interest in developing open-source LLMs. Among them, LLaMA is an open source LLM that matches the performance of GPT-3. Alpaca, Vicuna, GPT-4-LLM utilize various machine-generated high quality instruction-following samples to improve the LLM's alignment ability, reporting impressive performance compared with proprietary LLMs. Importantly, this line of work is \emph{text-only}.
+
+In this paper, we present visual instruction tuning, the first attempt to extend instruction-tuning to the language-image multimodal space, to pave the way towards building a general-purpose visual assistant. In patticular, our paper makes the following contributions:
+\begin{itemize}
+    \item \emph{Multimodal instruction-following data}. One key challenge is the lack of vision-language instruction-following data. We present a data reformation perspective and pipeline to convert image-text pairs into an appropriate instruction-following format, using ChatGPT/GPT-4.
+    \item \emph{Large multimodal models}. We develop a large multimodal model (LMM), by connecting the open-set visual encoder of CLIP with the language decoder Vicuna, and fine-tuning end-to-end on our generated instructional vision-language data. Our empirical study validates the effectiveness of using generated-purpose instruction-following visual agent. When ensembled with GPT-4, our approach achieves SOTA on the Science QA multimodal reasoning dataset.
+    \item \emph{Multimodal instruction-following benchmark}. We present LLaVA-Bench with two challenging benchmarks, with a diverse selection of paired images, instructions and detailed annotations.
+    \item \emph{Opne-source}. We release the following assets to the public: the generated multimodal instruction data, the codebase, the model checkpoints, and a visual chat demo.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Related Work}
+\noindent\textbf{Multimodal Instruction-following Agents.} In computer vision, existing works that build instruction-following agents can be broadly categorized into two classes: ($\mathrm{i}$) End-to-end trained models, which are separately explored for each specific research topic. For example, the vision-language navigation and take a sequence of actions to complete goals in visual environments. In the image editing domain, given an input image and a written instruction that tells the agents what to do, InstructPix2Pix edits images by following the human instructions. ($\mathrm{ii}$) A system that coordinates various models via LangChain/LLM, such as Visual ChatGPT, X-GPT, MM-REACT, VisProg, and ViperGPT. While sharing the same goal in building instruction-following agents, we focus on developing an end-to-end trained language-vision multimodal model for \emph{multiple} tasks.
+
+\noindent\textbf{Instruction Tuning.} In the natural language processing (NLP) community, to enable LLMs such as GPT-3, T5, PaLM and OPT to follow natural language instructions and complete real-world tasks, researchers have explored methods for LLM instruction-tuning, leading to instruction-tuned counterparts such as InstructGPT/ChatGPT, FLAN-T5, FLAN-PaLM, and OPT-IML, respectively. It turns out that this simple approach can effectively improve the zero and few-shot generalization abilities of LLMs. It is thus matural to borrow the idea from NLP to computer vision. More broadly, the teacher-student distillation ideas with foundation models have been studied  in other topics such as image classification. Flamingo can be viewed as the GPT-3 moment in the multimodal domain, due to its strong performance on zero-shot task transfer and in-context-learning. Other LMMs trained on image-text pairs include BLIP-2, FROMAGe, and KOSMOS-1. PaLM-E is an LMM for enbodied AI. Based on the recent "best" open-source LLM LLaMA, OpenFlamingo and LLaMA-Adapter are open-source multimodal LLMs. While these models present promising task transfer generalization performance in multimodal tasks usually falls short compared to language-only tasks. In this paper, we aim to fill this gap and study its effectiveness. Finally, note that visual instruction tuning is different from visual prompt tuning: the former aims to improve the model's instruction-following abilities, while the latter aims to improve the parameter-efficiency in model adaptation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{GPT-assisted Visual Instruction data Generation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Visual Instruction Tuning}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+% \input{checklist.tex}
+
+
+\end{document}
