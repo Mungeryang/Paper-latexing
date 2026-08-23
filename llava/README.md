@@ -37,3 +37,15 @@ Flowchart核心逻辑链：
 
 
 ## 思考模板
+
+
+
+
+## 📝 Writing Template
+On of the core aspirations in xxx is to ...
+
+To this end, the community has witnessed an emergent intrest in developing ..., with strong capabilities on xxx .
+
+Large Language Models (LLMs) has shown that language/vision can play a wider role in/: xxx .
+
+
