@@ -26,7 +26,6 @@ Flowchart核心逻辑链：
 - 主轴：Key Idea / Mechanism
 - Goal：一句话交代即可
 
-
 **Propose a New Research Problem/Setting（新问题/新设定/新任务）**
 - 主轴：Our Goal / Problem Formulation（问题定义本身是贡献）
 - Key Idea：作为"为什么这样定义合理/可行"的支撑
@@ -35,155 +34,64 @@ Flowchart核心逻辑链：
 - 主轴：Summary of common problems（归纳若干方法的存在的统一共性问题）
 - Key Idea：解释清楚共性问题产生的原因，给出解决方法(总结出共性问题已经是大部头的工作，只需在这基础上探索出一小步的解决方案)
 
-
-## 思考模板
-
-### 论文类型定位：Technique paper（新方法解决既有问题）
-
+**ResNet 的类型判断**：**Technique paper**（新方法解决既有问题——针对深度网络的退化问题提出残差学习框架）。主轴是 Key Idea / 机制性假设（残差映射比原始映射更易优化），Goal 仅一句话交代。
 
 **值得注意（ResNet 作为 Technique paper 的经典之处）**：它没有罗列 3 个 limitation，而是聚焦*唯一核心局限（degradation）*，并用"构造解论证"把它从现象层面（精度退化）提升到本质层面（**优化困难**，而非表示能力不足）。Key Idea 因此与问题本质严丝合缝——残差学习直接对症优化困难。正因如此，ResNet 无需显式罗列技术挑战：非平凡性论证已内化在问题属性解读之中。
 
-### 基于 Flowchart，转成 Table，将原文思路映射到对应的逻辑阶段
+## 思考模板
 
-下表将 ResNet Introduction 的原文要点按 Flowchart 逻辑阶段归纳为中文提纲，可用于对照原文逐句拆分整理。
+| 逻辑阶段 | 原文内容与写作思路剖析 |
+|---|---|
+| **研究背景** | |
+| 研究场景是什么？为什么重要？需要一个清晰的场景定义 + 研究动机 | "Deep convolutional neural networks have led to a series of breakthroughs for image classification. Deep networks naturally integrate low/mid/high-level features and classifiers in an end-to-end multilayer fashion, and the "levels" of features can be enriched by the number of stacked layers (depth)." 以及 "Recent evidence reveals that network depth is of crucial importance, and leading results on the challenging ImageNet dataset all exploit "very deep" models, with a depth of sixteen to thirty. Many other nontrivial visual recognition tasks have also greatly benefited from very deep models." **写作思路**：ResNet 以"深度的重要性"作为场景定义与研究动机——先用深度 CNN 的分类突破带出"端到端多层结构"这一技术语境，再强调 ImageNet 领先结果均采用 16~30 层的"极深"模型，把全文主线锁定在"深度"上。ResNet 直接从技术主线切入，场景与动机合二为一。 |
+| **研究问题分析与属性解读** | |
+| Limitation 1 | "Driven by the significance of depth, a question arises: Is learning better networks as easy as stacking more layers?" 承上启下提问之后，先"排除"已解决的旧障碍："An obstacle to answering this question was the notorious problem of vanishing/exploding gradients, which hamper convergence from the beginning. This problem, however, has been largely addressed by normalized initialization and intermediate normalization layers, which enable networks with tens of layers to start converging for stochastic gradient descent (SGD) with backpropagation."（**注意：梯度消失/爆炸是"已解决"的旧障碍，写作上只起铺垫作用，不是本文的 Limitation**）。随后亮出唯一核心局限为**退化问题**："When deeper networks are able to start converging, a degradation problem has been exposed: with the network depth increasing, accuracy gets saturated (which might be unsurprising) and then degrades rapidly." 并用关键否定提升问题分量："Unexpectedly, such degradation is not caused by overfitting, and adding more layers to a suitably deep model leads to higher training error, as reported in [10,41] and thoroughly verified by our experiments. Fig.1 shows a typical example." **写作思路**：由背景自然提问，把读者带到真正的问题面前。ResNet 没有罗列 3 个局限，而是聚焦退化问题这一个核心局限；"不是过拟合"的否定尤为关键——它排除了最自然的解释，迫使读者追问更深层的原因。 |
+| Limitation 2 | **属性解读（立论基石）**：用构造解论证把退化问题从"精度现象"解读为"优化困难"。"The degradation (of training accuracy) indicates that not all systems are similarly easy to optimize. Let us consider a shallower architecture and its deeper counterpart that adds more layers onto it. There exists a solution by construction to the deeper model: the added layers are identity mapping, and the other layers are copied from the learned shallower model. The existence of this constructed solution indicates that a deeper model should produce no higher training error than its shallower counterpart." 由此否定"表示能力不足"的解释，并得出本质结论："But experiments show that our current solvers on hand are unable to find solutions that are comparably good or better than the constructed solution (or unable to do so in feasible time)." **写作思路**：构造解论证是 ResNet Intro 最精彩的——不满足于描述现象，而是通过"存在性论证"完成归因：深网络表达能力（解的存在性）没有问题，退化本质是**优化困难**，而非表示能力不足。这一步把 Limitation 提升为立论基石，为 Key Idea 直接铺路。 |
+| Limitation 3 | 这篇论文没有讨论第三点局限。ResNet 聚焦*唯一核心局限（degradation）*，并用"构造解论证"把它从现象层面（精度退化）提升到本质层面（**优化困难**，而非表示能力不足）。Key Idea 因此与问题本质严丝合缝——残差学习直接对症优化困难。正因如此，ResNet 无需显式罗列技术挑战：非平凡性论证已内化在问题属性解读之中。 |
+| **论文的 Novelty 和创新思路讨论** | |
+| Key Idea | 符合"新方法解决既有问题"的判定——主轴是机制性假设，Goal 仅一句话交代："In this paper, we address the degradation problem by introducing a deep residual learning framework." 核心洞见分三步展开：① **目标重构**："Instead of hoping each few stacked layers directly fit a desired underlying mapping, we explicitly let these layers fit a residual mapping. Formally, denoting the desired underlying mapping as H(x), we let the stacked nonlinear layers fit another mapping of F(x) = H(x) − x. The original mapping is recast into F(x) + x."；② **核心假设（Hypothesis）**："We hypothesize that it is easier to optimize the residual mapping than to optimize the original, unreferenced mapping."；③ **极端情形论证**："To the extreme, if an identity mapping were optimal, it would be easier to push the residual to zero than to fit an identity mapping by a stack of nonlinear layers." **写作思路**：创新思路与局限一一对应，一个 Key Idea 直接对症唯一核心局限（优化困难）。先给出目标映射的重构，再给出"为什么更易优化"的假设，并用极端情形论证让假设直观可信。 |
+| Challenges | **NA**。ResNet 没有单独讨论技术挑战，nontrivial 论证分两半完成：前一半在"属性解读"（构造解论证表明直接加深不可行——求解器找不到构造解，plain net 无效），后一半在"方法总览"（零开销、训练机制不变）。隐含挑战有二：① **优化困难**——求解器找不到构造解，直接堆层（plain net）无效；② **工程约束**——新结构需不增参数/计算复杂度、不破坏端到端 SGD+BP 与易实现性。AI 顶会论文经常采用这种写法（不讲 Challenges，直接讲 Our Methodology）。 |
+| 方法总览 | "The formulation of F(x) + x can be realized by feedforward neural networks with "shortcut connections" (Fig.2)." 方法总览由三个技术点组成，与隐含挑战一一对应：① **恒等跳连**（实现残差公式）："Shortcut connections [2,33,48] are those skipping one or more layers. In our case, the shortcut connections simply perform identity mapping, and their outputs are added to the outputs of the stacked layers (Fig.2)."；② **零开销**（满足工程约束）："Identity shortcut connections add neither extra parameter nor computational complexity."；③ **可训练性与易实现性**："The entire network can still be trained end-to-end by SGD with backpropagation, and can be easily implemented using common libraries (e.g., Caffe[19]) without modifying the solvers." **写作思路**：ResNet 的方法总览很短——核心机制（残差映射）已在 Key Idea 段讲透，这里只需回答"怎么落地、落地是否便宜、是否破坏既有训练机制"三个工程问题。 |
+| 贡献点 | ResNet 以"实验结论 → 泛化性 → 竞赛结果"三级递进收束，把贡献从方法本身推广到原理的普适性。① **ImageNet 综合实验（2 点结论）**："We present comprehensive experiments on ImageNet to show the degradation problem and evaluate our method. We show that: (1) Our extremely deep residual nets are easy to optimize, but the counterpart "plain" nets (that simply stack layers) exhibit higher training error when the depth increases; (2) Our deep residual nets can easily enjoy accuracy gains from greatly increased depth, producing results substantially better than previous networks."；② **泛化性（CIFAR-10）**："Similar phenomena are also shown on the CIFAR-10 set, suggesting that optimization difficulties and the effects of our method are not just akin to a particular dataset. We present successfully trained models on this dataset with over 100 layers, and explore models with over 1000 layers."；③ **结果与竞赛**："On the ImageNet classification dataset [35], we obtain excellent results by extremely deep residual nets. Our 152-layer residual net is the deepest network ever presented on ImageNet, while still having lower complexity than VGG nets [40]. Our ensemble has 3.57% top-5 error on the ImageNet test set, and won the 1st place in the ILSVRC 2015 classification competition. The extremely deep representations also have excellent generalization performance on other recognition tasks, and lead us to further win the 1st places on: ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation in ILSVRC & COCO 2015 competitions. This strong evidence shows that the residual learning principle is generic, and we expect that it is applicable in other vision and non-vision problems." **写作思路**：注意贡献点与 Key Idea 首尾呼应——结论 (1) 验证"易优化"（对症 Limitation），结论 (2) 验证"精度增益"；CIFAR-10 实验排除了"数据集特例"的可能；竞赛大满贯把"方法有效"升级为"原理普适"。 |
 
-<table>
-  <colgroup>
-    <col style="width: 18%;">
-    <col style="width: 32%;">
-    <col style="width: 50%;">
-  </colgroup>
-  <thead>
-    <tr>
-      <th>逻辑阶段</th>
-      <th>说明（在 ResNet 中承担的论证任务）</th>
-      <th>原文内容与写作思路剖析</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>研究背景</strong></td>
-      <td>研究场景是什么？为什么重要？ResNet 以"深度的重要性"作为场景定义与研究动机，把全文主线锁定在"深度"上。</td>
-      <td>
-        • 场景：深度 CNN 带来图像分类的系列突破，端到端多层结构自然整合低/中/高层特征与分类器
-        <blockquote>Deep convolutional neural networks have led to a series of breakthroughs for image classification.<br>
-        Deep networks naturally integrate low/mid/high-level features and classifiers in an end-to-end multilayer fashion, and the "levels" of features can be enriched by the number of stacked layers (depth).</blockquote>
-        • 动机：网络深度至关重要——ImageNet 领先结果均采用 16~30 层的"极深"模型，许多视觉任务同样受益
-        <blockquote>Recent evidence reveals that network depth is of crucial importance, and leading results on the challenging ImageNet dataset all exploit "very deep" models, with a depth of sixteen to thirty.<br>
-        Many other nontrivial visual recognition tasks have also greatly benefited from very deep models.</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td rowspan="3"><strong>问题分析与属性解读</strong></td>
-      <td><strong>现状分析（总述）</strong>：由背景自然提问，再"排除"已解决的旧障碍，把读者带到真正的问题面前。</td>
-      <td>
-        • 承上启下提问：学习更好的网络是否就像堆叠更多层一样简单？<br>
-        <blockquote>Driven by the significance of depth, a question arises: Is learning better networks as easy as stacking more layers?</blockquote>
-        • 障碍铺垫：梯度消失/爆炸问题已被归一化初始化 + 中间归一化层（BN）基本解决，数十层网络可经 SGD+BP 收敛（<strong>注意：这是"已解决"的旧障碍，写作上只起铺垫作用，不是本文的 Limitation</strong>）
-        <blockquote>An obstacle to answering this question was the notorious problem of vanishing/exploding gradients, which hamper convergence from the beginning.<br>This problem, however, has been largely addressed by normalized initialization and intermediate normalization layers, which enable networks with tens of layers to start converging for stochastic gradient descent(SGD) with backpropagation.</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>Limitation 1（唯一核心局限）</strong>：ResNet 没有罗列 3 个局限，而是聚焦退化问题这一个核心局限，并在下一行把它从现象提升到本质。</td>
-      <td>
-        • 退化问题（degradation）：深度增加 → 准确率饱和（可预期）→ 迅速退化（意外）<br>
-        <blockquote>When deeper networks are able to start converging, a degradation problem has been exposed: with the network depth increasing, accuracy gets saturated (which might be unsurprising) and then degrades rapidly.</blockquote>
-        • 关键否定：<strong>不是过拟合</strong>——给适度深的模型再加层，<strong>训练误差</strong>反而升高（[10,41] 报告 + 本文 Fig.1 验证）
-        <blockquote>Unexpectedly, such degradation is not caused by overfitting, and addingmore layers to a suitably deep models leads to higher training error, as reported in [10,41] and thoroughly verified by our experiments, Fig.1 shows a typical example.</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>属性解读（立论基石）</strong>：用构造解论证把退化问题从"精度现象"解读为"优化困难"，为 Key Idea 直接铺路。</td>
-      <td>
-        • 构造解论证：把浅网络已学权重复制到深层，新增层设为恒等映射 → 存在"训练误差不高于浅网络"的构造解 → 深网络表达能力（解的存在性）没有问题<br>
-        <blockquote>The degradation(of training accuracy) indicates that not all systems are similarly easy to optimize. Let us consider a shallower architecture and its deeper counterpart that adds more layers onto it. There exists a solution by construction to the deeper model: the added layers are identity mapping, and the other layers are copied from the learned shallower model. The existence of this constructed solution indicates that a deeper model should produce no higher training error than its shallower counterpart.</blockquote>
-        • 结论：退化本质是<strong>优化困难</strong>——现有求解器找不到与构造解相当或更好的解
-        <blockquote>But experiments show that our current solvers on hand unable to find solutions that are comparably good or better than the constructed solution (or unable to do so in feasible time).</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td rowspan="2"><strong>论文的 Novelty 和创新思路讨论</strong></td>
-      <td>创新思路与局限性的对应关系：一个 Key Idea 直接对症唯一核心局限（优化困难）——先给出目标映射的重构，再给出"为什么更易优化"的假设与极端情形论证。</td>
-      <td>
-        • 目标重构：不让堆叠层直接拟合目标底层映射 H(x)，改为显式拟合<strong>残差映射</strong> F(x) = H(x) − x，原始映射重构为 F(x) + x
-        <blockquote>Instead of hoping each few stacked layers directly fit a desired underlying mapping, we explicitly let these layers fit a residual mapping. Formally, denoting the desired underlying mapping as H(x), we let the stacked nonlinear layers fit another mapping of F(x) = H(x) - x. The original mapping is recast into F(x) + x.</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>Key Idea（主轴）</strong>：符合"新方法解决既有问题"的判定——主轴是机制性假设，Goal 仅一句话交代（"address the degradation problem by introducing a deep residual learning framework"）。</td>
-      <td>
-        • Goal 一句话（Technique paper 的目标只需一句交代）：提出深度残差学习框架以解决退化问题
-        <blockquote>In this paper, we address the degradation problem by introducing a deep residual learning framework.</blockquote>
-        • 核心假设（Hypothesis）：残差映射比原始、无参照的映射<strong>更易优化</strong>
-        <blockquote>We hypothesize that it is easier to optimize the residual mapping than to optimize the original, unreferenced mapping.</blockquote>
-        • 极端情形论证：若恒等映射即最优，把残差推向零比用非线性层堆叠拟合恒等映射更容易
-        <blockquote>To the extreme, if an identity mapping were optimal, it would be easier to push the residual to zero than to fit an identity mapping by a stack of nonlinear layers.</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>创新思路是否 Naive？<br>（技术挑战的内化）</strong></td>
-      <td>ResNet 未罗列"3 个挑战"，nontrivial论证分两半完成：前一半在"属性解读"（构造解论证表明直接加深不可行），后一半在"方法总览"（实现零开销、训练机制不变）。</td>
-      <td>
-        • 隐含挑战 1：优化困难——求解器找不到构造解，直接堆层（plain net）无效（原文第 4 段已论证）<br>
-        <blockquote></blockquote>
-        • 隐含挑战 2：工程约束——新结构需不增参数/计算复杂度、不破坏端到端 SGD+BP 与易实现性<br>
-        <blockquote></blockquote>
-        • nontrivial落点：Key Idea 由构造解论证导出；恒等跳连恰好零开销满足工程约束
-        <blockquote></blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td rowspan="4"><strong>Our Methodology<br>（方法总览）</strong></td>
-      <td>总领句：残差公式 F(x) + x 的落地方案。</td>
-      <td>
-        • F(x) + x 可由带 "shortcut connections" 的前馈网络实现
-        <blockquote>The formulation of F(x) + x can be realized by feedforward neural networks with "shortcut connections"(Fig.2).</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td>第一个技术点：恒等跳连的结构。</td>
-      <td>
-        • 恒等 shortcut connections —— 跳过一个或多个层，输出与堆叠层输出直接相加
-        <blockquote>Shortcut connections [2,33,48] are those skipping one or more layers. In our case, the shortcut connections simply perform identity mapping, and their outputs are added to the outputs of the stacked layers (Fig.2).</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td>第二个技术点：零开销。</td>
-      <td>
-        • 恒等跳连<strong>不增加任何参数，也不增加计算复杂度</strong>（原文第 6 段）
-        <blockquote>Identity shortcut connections add neither extra parameter nor computational complexity.</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td>第三个技术点：可训练性与易实现性。</td>
-      <td>
-        • 整网仍可端到端 SGD+BP 训练；用常用库（如 Caffe[19]）即可实现，<strong>无需修改求解器</strong>
-        <blockquote>The entire network can still be trained end-to-end by SGD with backpropagation, and can be easily implemented using common libraries (e.g., Caffe[19]) without modifying the solvers.</blockquote>
-      </td>
-    </tr>
-    <tr>
-      <td><strong>总结贡献点</strong></td>
-      <td>ResNet 以"实验结论 → 泛化性 → 竞赛结果"三级递进收束，把贡献从方法本身推广到原理的普适性。</td>
-      <td>
-        • ImageNet 综合实验（2 点结论）：① 极深残差网<strong>易优化</strong>，plain 网加深训练误差升高；② 残差网从大深度获得<strong>精度增益</strong>，显著优于先前网络<br>
-        <blockquote>We present comprehensive experiments on ImageNet to show the degradation problem and evaluate our method. We show that: (1)Our extremely deep residual nets are easy to optimize, but the counterpart "plain" nets (that simply stack layers) exhibit higher training error when the depth increases; (2)Our depth residual nets can easily enjoy accuracy gains from greatly increased depth, producing results substantially better than previous networks.</blockquote>
-        • 泛化性：CIFAR-10 上同样现象 → 优化困难与方法效果<strong>不是数据集特例</strong>；成功训练 100+ 层，并探索 1000+ 层<br>
-        <blockquote>Similar phenomena are also shown on the CIFAR-10 set, suggesting that optimization diffculties and the effects of our method are not just akin a particular dataset. We present successfully trained models on this dataset with over 100 layers, and explore models with over 1000 layers.</blockquote>
-        • 结果与竞赛：152 层 = ImageNet 史上最深网络、复杂度仍低于 VGG；集成 top-5 error <strong>3.57%</strong>；获 ILSVRC 2015 分类冠军 + ImageNet 检测/定位、COCO 检测/分割冠军 → 残差学习原理<strong>通用</strong>，预期适用于其他视觉与非视觉问题
-        <blockquote>On the ImageNet classification dataset [35], we obtain excellent results by extremely deep residual nets. Our 152 layers residual net is the deepest network ever presented on ImageNet, while still having lower complexity than VGG nets [40]. Our ensemble has 3.57% top-5 error on the ImageNet test set, and won the 1st place in the ILSVRC 2015 classification competition. The extremely deep representations alse have excellent generalization performance on other recognition tasks, and lead us to further win the 1st places on: ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation in ILSVRC & COCO 2015 competitions. This strong evidence shows that the residual learning principle is generic, and we expect that it is applicable in other vision and non-vision problems.</blockquote>
-      </td>
-    </tr>
-  </tbody>
-</table>
+## 📝 Writing Template
 
+（ResNet Introduction 中的高频句式与词汇，可直接套用）
 
+**场景与动机**
+- "Deep convolutional neural networks have led to a series of breakthroughs for xxx."
+- "Recent evidence reveals that xxx is of crucial importance."
+
+**承上启下提问**
+- "Driven by the significance of xxx, a question arises: Is learning better networks as easy as stacking more layers?"
+
+**障碍铺垫与排除**
+- "An obstacle to answering this question was the notorious problem of xxx... This problem, however, has been largely addressed by xxx..."
+
+**现象描述 + 否定式归因**
+- "When deeper networks are able to start converging, a degradation problem has been exposed: ..."
+- "Unexpectedly, such degradation is not caused by overfitting..."
+
+**构造解论证**（存在性论证，用于定位问题本质）
+- "There exists a solution by construction to the deeper model: the added layers are identity mapping, and the other layers are copied from the learned shallower model."
+
+**目标重构**
+- "Instead of hoping each few stacked layers directly fit a desired underlying mapping, we explicitly let these layers fit a residual mapping."
+
+**核心假设**
+- "We hypothesize that it is easier to optimize the residual mapping than to optimize the original, unreferenced mapping."
+
+**极端情形论证**
+- "To the extreme, if an identity mapping were optimal, it would be easier to push the residual to zero than to fit an identity mapping by a stack of nonlinear layers."
+
+**收束与展望**
+- "This strong evidence shows that the residual learning principle is generic, and we expect that it is applicable in other vision and non-vision problems."
+
+**高频词汇**
+- degradation（退化）· saturation（饱和）· counterpart（对照网络/对应物）· by construction（构造性地）· recast（重构）· unreferenced mapping（无参照映射）· hypothesize（假设）· nontrivial（非平凡的）· generic（普适的）
 
 ## 🙏 Acknowledgment
 
 Intro写作的思考模版 Markdown 继承自：[Supervisor-Skills](https://github.com/HKUSTDial/Supervisor-Skills)
 
 由衷感谢 **香港科技大学（广州）骆昱宇** 老师团队的开源项目！ 💐🌹🌹
-
-
-
-
