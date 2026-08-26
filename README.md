@@ -13,6 +13,25 @@
 
 ### [CVPR 2015] Deep Residual Learning for Image Recognition
 
+### [NeurIPS 2023] Visual Instruction Tuning
+
+
+## Intro思考模版
+
+| 逻辑阶段 | 原文内容与写作思路剖析 |
+|---|---|
+| **研究背景** | |
+| 研究场景是什么？为什么重要？需要一个清晰的场景定义 + 研究动机 |  **写作思路**：交代大的背景——LLMs 很牛，但 LLMs 的能力严重依赖于人工设计的 agentic workflows，这个人工设计过程费时费力，限制了可扩展性。 |
+| **研究问题分析与属性解读** | |
+| Limitation 1 |  **写作思路**： |
+| Limitation 2 |  **写作思路**： |
+| Limitation 3 | 这篇论文没有讨论第三点局限。这篇论文主要针对"自动化编排工作流水平低"和"多样化工作流统一建模能力弱"两个局限，作为 AFlow 的方法动机。 |
+| **论文的 Novelty 和创新思路讨论** | |
+| Key Idea | xxx 的核心洞见是将  |
+| Challenges | 如何定义一个 |
+| 方法总览 |  **写作思路**： |
+| 贡献点 |  |
+
 
 
 ## 🙏 Acknowledgment
