@@ -15,6 +15,8 @@
 
 ### [NeurIPS 2023] Visual Instruction Tuning
 
+### [ICML 2023] BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models
+
 
 ## Intro思考模版
 
